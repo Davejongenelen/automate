@@ -1,17 +1,20 @@
-all: plot_Antwerp.pdf plot_all.pdf
 
-reviews.csv listings.csv: download_data.R
-		R --vanilla < download_data.R
+my_new_try: data/reviews.csv data/listings.csv temp/aggregated_df.csv temp/pivot_table.csv output/plot_Antwerp.pdf output/plot_all.pdf
+
+all: output/plot_Antwerp.pdf output/plot_all.pdf
+
+data/reviews.csv data/listings.csv: src/download_data.R
+		R --vanilla < src/download_data.R
 
 
-aggregated_df.csv: automate.R reviews.csv listings.csv
-		R --vanilla < automate.R
+temp/aggregated_df.csv: src/automate.R data/reviews.csv data/listings.csv
+		R --vanilla < src/automate.R
 
-pivot_table.csv: export_pivot.R aggregated_df.csv
-		R --vanilla < export_pivot.R
+temp/pivot_table.csv: src/export_pivot.R temp/aggregated_df.csv
+		R --vanilla < src/export_pivot.R
 	
-plot_Antwerp.pdf: plot_antwerp.R pivot_table.csv
-		R --vanilla < plot_antwerp.R 
+output/plot_Antwerp.pdf: src/plot_antwerp.R temp/pivot_table.csv
+		R --vanilla < src/plot_antwerp.R 
 		
-plot_all.pdf: plot_all.R aggregated_df.csv
-		R --vanilla < plot_all.R
+output/plot_all.pdf: src/plot_all.R temp/aggregated_df.csv
+		R --vanilla < src/plot_all.R
