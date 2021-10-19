@@ -11,7 +11,7 @@ listings <- read.csv("data/listings.csv")
 reviews$date <- as.Date(reviews$date)
 
 # filter for reviews published since 01/01/2015
-reviews_filtered <- reviews %>% filter(date > "2016-01-01")
+reviews_filtered <- reviews %>% filter(date > "2015-01-01")
 
 # filter for `listings` that have received at least 1 review.
 listings_filtered <- listings %>% filter(number_of_reviews > 1)
